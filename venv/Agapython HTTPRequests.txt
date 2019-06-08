@@ -1,0 +1,77 @@
+HTTP REQUESTS DE AGAPYTHON:
+
+@app.route('/agapython/listarAsignaciones', methods=['GET'])
+
+	"localhost:5000/agapython/listarAsignaciones"
+	
+Si en cualquier momento quieres las asignaciones Puertas=>idVueloAsignado, este metodo te lo regresa en JSON en el formato:
+{
+  "asignaciones": 
+  [
+    {
+      "idPuerta": 1, 
+      "idVueloAsignado": ""
+    }, 
+    {
+      "idPuerta": 2, 
+      "idVueloAsignado": ""
+    }, 
+  ]
+}
+
+@app.route('/agapython/actualizarPuertas', methods=['GET'])
+
+	"localhost:5000/agapython/actualizarPuertas"
+	
+Lo unico que hace este metodo HTTP es avisarle al servidor Agapython que se ha actualizado la informacion de las puertas.
+El servidor automaticamente extrae la nueva info de la Base de Datos.
+
+@app.route('/agapython/listarPuertas', methods=['GET'])
+
+	"localhost:5000/agapython/listarPuertas"
+	
+Si quieres la lista de las puertas con sus datos, el servidor de python te lo regresa en JSON en el siguiente formato:
+{
+  "Puertas": [] //FALTA DEFINIR PORQUE NO ME PUEDO CONECTAR A LA BASE DESDE MI CASA!
+}
+
+@app.route('/agapython/encolarVuelo', methods=['POST'])
+
+	"localhost:5000/agapython/encolarVuelo"
+	
+Metodo HTTP que te permite encolar un nuevo vuelo que esta llegando al aeropuerto. El servidor automaticamente lo encola y lo deja
+en reserva (es decir, no lo envia al algoritmo de la cola automaticamente). El JSON que tienes que enviarle debe seguir el formato:
+{
+	"idVuelo": 2,
+	"TiempoLlegada": "2019-06-05 13:00:00",
+	"NPersonas": "300",
+	"NPrioridad": "3" //NOTESE QUE COMO EL SERVIDOR DEBE MINIMIZAR ACCESO A BD, SPRING DEBE DE OTORGARLE LA PRIORIDAD AL VUELO, NO AGAPYTHON
+}
+
+@app.route('/agapython/actualizarVuelos', methods=['GET'])
+
+	"localhost:5000/agapython/actualizarVuelos',"
+	
+Metodo HTTP que te permite avisarle al servidor Agapython que elimine los vuelos que ya han expirado (definidos como aquellos que ya dejaron
+a sus pasajeros), de manera que no ocupen espacio en el. //TENTATIVO: QUE NO SEA HTTPREQUEST, SINO QUE SE HAGA UN CHEQUEO CADA 30 MINUTOS?
+
+@app.route('/agapython/listarVuelos', methods=['GET'])
+
+	"localhost:5000/agapython/listarAsignaciones"
+	
+Metodo HTTP que lista los vuelos encolados (se les haya asignado una puerta, hayan sido introducidos al algoritmo de la cola, o no).
+El formato de salida es el siguiente:
+{
+  "VuelosEncolados": 
+  "[
+	{\"idVuelo\":1,\"TiempoLlegada\":1559739600000,\"NPersonas\":\"300\",\"NPrioridad\":\"3\",\"Asignado\":0},
+	{\"idVuelo\":2,\"TiempoLlegada\":1559739600000,\"NPersonas\":\"300\",\"NPrioridad\":\"3\",\"Asignado\":0}
+	]"
+}
+
+@app.route('/agapython/asignarVuelos', methods=['GET'])
+
+	"localhost:5000/agapython/asignarVuelos"
+	
+Metodo HTTP que le indica al algoritmo que asigne los vuelos encolados de la mejor manera que pueda. Los vuelos encolados son enviados
+al algoritmo de la cola, que los prioriza y luego les asigna puertas. Esto no regresa las asignaciones.
