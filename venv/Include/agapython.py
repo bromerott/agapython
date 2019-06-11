@@ -47,6 +47,7 @@ def create_Vuelo():
 #Metodo para matar vuelos que ya no descargan pasajeros
 @app.route('/agapython/actualizarVuelos', methods=['GET'])
 def update_Vuelos():
+    contAlgoritmoCola.actualizarVuelos()
     contAlgoritmoCola.matarVuelos(contAsignaciones.listarAsignaciones(),contAsignaciones.listarPuertas())
     return jsonify({'Vuelos': 'Actualizados'}), 201
 
@@ -59,6 +60,7 @@ def get_Vuelos():
 @app.route('/agapython/asignarVuelos', methods=['GET'])
 def assign_Vuelos():
     #Matar vuelos porsiacaso
+    contAlgoritmoCola.actualizarVuelos()
     contAlgoritmoCola.matarVuelos(contAsignaciones.listarAsignaciones(),contAsignaciones.listarPuertas())
     dfVuelosEscogidos = contAlgoritmoCola.escogerVuelos()
     if (dfVuelosEscogidos.shape[0]):

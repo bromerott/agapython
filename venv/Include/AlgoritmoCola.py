@@ -8,15 +8,24 @@ class AlgoritmoCola():
     dfVuelosEncolados = pd.DataFrame()
     #Definicion de columnas del dataframe
     def __init__(self):
-        self.dfVuelosEncolados = pd.DataFrame(columns=['idVuelo','TiempoLlegada','NPersonas','NPrioridad','Asignado'])
+        self.dfVuelosEncolados = pd.DataFrame(columns=['idVuelo','TiempoLlegada','NPersonas','NPrioridad','Asignado','Estado'])
     def listarVuelosEncolados(self):
         return self.dfVuelosEncolados.to_json(orient='records')
     #Encolacion del vuelo al algoritmo
     def encolarVuelo(self,idVuelo,TiempoLlegada,NPersonas,NPrioridad):
         #Parsing de string TiempoLlegada a datetime
         dtLlegada = datetime.strptime(TiempoLlegada,'%Y-%m-%d %H:%M:%S')
-        self.dfVuelosEncolados = self.dfVuelosEncolados.append({"idVuelo":idVuelo,"TiempoLlegada":dtLlegada,"NPersonas":NPersonas,"NPrioridad":NPrioridad,"Asignado":0}, ignore_index=True)
+        self.dfVuelosEncolados = self.dfVuelosEncolados.append({"idVuelo":idVuelo,"TiempoLlegada":dtLlegada,"NPersonas":NPersonas,"NPrioridad":NPrioridad,"Asignado":0,"Estado":0}, ignore_index=True)
         return self.dfVuelosEncolados[self.dfVuelosEncolados['idVuelo']==idVuelo].to_json(orient ='records')
+    
+    def actualizarVuelos(self):
+        #Chequeo de vuelos aterrizados
+        for row in self.dfVuelosEncolados:
+            tiempoLlegada = row['TiempoLlegada'][0]
+            if (tiempoLlegada>datetime.datetime.now()):
+                self.dfVuelosEncolados["Estado"][row["idVuelo"]]=2
+
+    
     def matarVuelos(self,asignaciones,puertas):
         for asignacion in asignaciones:
             if (asignacion['idVueloAsignado']):
@@ -60,5 +69,6 @@ class AlgoritmoCola():
             #Con los codigos de los vuelos escogidos, actualizar el atributo Asignado
             for codigo in codigosEscodigos:
                 self.dfVuelosEncolados[self.dfVuelosEncolados['idVuelo']==codigo]['Asignado'] =1
+                self.dfVuelosEncolados[self.dfVuelosEncolados['idVuelo']==codigo]['Estado'] = 1
 
         return dfVuelosEscogidos
