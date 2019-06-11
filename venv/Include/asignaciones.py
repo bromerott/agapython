@@ -33,9 +33,9 @@ class ControladorAsignaciones():
         )
         mydb.connect()
         print(mydb)
-        self.dfPuertas = pd.read_sql_query("SELECT id_puerta,estado,flujo_personas,tipo FROM puertas; ",mydb)
-        self.dfPuertas.rename(columns={"id_puerta":"idPuerta","flujo_personas":"FlujoPersonas"})
-        print(self.dfPuertas)
+        self.dfPuertas = pd.read_sql_query("SELECT id_puerta,tipo,distanciaasalida,flujo_personas,estado,borrado FROM puertas; ",mydb)
+        #self.dfPuertas.rename(columns={"id_puerta":"idPuerta","flujo_personas":"FlujoPersonas","distanciaasalida":"DistanciaASalida"})
+        #print(self.dfPuertas)
         mydb.close()
         return 0
     def asignarVuelos(self,dfVuelosEscogidos):

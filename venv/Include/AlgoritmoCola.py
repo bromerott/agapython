@@ -23,8 +23,8 @@ class AlgoritmoCola():
                 #Busqueda en dict puertas
                 Flujo=0
                 for puerta in puertas:
-                    if (puerta['idPuerta'] == asignacion['idPuerta']):
-                        Flujo = puerta['FlujoPersonas']
+                    if (puerta['id_puerta'] == asignacion['id_puerta']):
+                        Flujo = puerta['flujo_personas']
 
                 idVuelo = asignacion['idVueloAsignado']
                 #Busqueda en dfVuelosEncolados
