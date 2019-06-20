@@ -12,7 +12,7 @@ class ControladorAsignaciones():
                 'idPuerta':i,
                 'idVueloAsignado':''
             }
-            self.asignaciones.append(asignacion)
+            self.asignaciones = self.asignaciones.append(asignacion)
         #Cargar puertas desde la BD
         self.cargarPuertas()
 

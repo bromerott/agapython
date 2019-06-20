@@ -38,9 +38,10 @@ def calcularObjetivo(modelo,X):
     costo = 0
     for i in range(1,filas):
         for j in range(1,columnas):
-            nPasajeros=modelo['Llegadas'].iloc[i]['NPersonas']
-            caudal=modelo['Gates'].iloc[j]['flujo_personas']
-            costo = costo + X[j][i]*nPasajeros/caudal
+            if (X[j][i == 1]):
+                nPasajeros=modelo['Llegadas'].iloc[i]['NPersonas']
+                caudal=modelo['Gates'].iloc[j]['flujo_personas']
+                costo = costo + X[j][i]*nPasajeros/caudal
     return costo
 
 #Funcion que toma una solucion y la cambia a un "vecino"
