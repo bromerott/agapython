@@ -3,7 +3,7 @@ import mysql.connector
 import pandas as pd
 #Controlador de Puertas y Asignaciones
 class ControladorAsignaciones():
-    asignaciones = []
+    asignaciones = list()
     dfPuertas = pd.DataFrame()
     def __init__(self):
         #Cargar lista vacia de asignaciones
@@ -12,7 +12,7 @@ class ControladorAsignaciones():
                 'idPuerta':i,
                 'idVueloAsignado':''
             }
-            self.asignaciones = self.asignaciones.append(asignacion)
+            self.asignaciones.append(asignacion)
         #Cargar puertas desde la BD
         self.cargarPuertas()
 

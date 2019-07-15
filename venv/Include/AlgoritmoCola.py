@@ -1,5 +1,5 @@
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class AlgoritmoCola():
     #Tamaño maximo de input al algoritmo
@@ -11,6 +11,9 @@ class AlgoritmoCola():
         self.dfVuelosEncolados = pd.DataFrame(columns=['idVuelo','TiempoLlegada','NPersonas','NPrioridad','Asignado','Estado'])
     def listarVuelosEncolados(self):
         return self.dfVuelosEncolados.to_json(orient='records')
+    #Listar filas cuyo estado sea =3
+    def listarVuelosMuertos(self):
+        return self.dfVuelosEncolados.loc[self.dfVuelosEncolados["Estado"]==3].to_json(orient='records')
     #Encolacion del vuelo al algoritmo
     def encolarVuelo(self,idVuelo,TiempoLlegada,NPersonas,NPrioridad):
         #Parsing de string TiempoLlegada a datetime
@@ -25,8 +28,13 @@ class AlgoritmoCola():
             if (tiempoLlegada>datetime.datetime.now()):
                 self.dfVuelosEncolados["Estado"][row["idVuelo"]]=2
 
+    def eliminarVuelos(self):
+        hoyMenos3Dias = datetime.datetime.now() - timedelta(days=3)
+        self.dfVuelosEncolados = self.dfVuelosEncolados[self.dfVuelosEncolados["TiempoLlegada"] < hoyMenos3Dias]
+
     
     def matarVuelos(self,asignaciones,puertas):
+        #Chequeo de vuelos que ya descargaron pasajeros y mueren para el sistema
         for asignacion in asignaciones:
             if (asignacion['idVueloAsignado']):
                 #Busqueda en dict puertas
@@ -42,7 +50,7 @@ class AlgoritmoCola():
                 #Chequeo de muerte
                 if (datetime.datetime.now() > tiempoCalculado):
                     #Matar vuelo, desencolandolo para siempre
-                    self.dfVuelosEncolados = self.dfVuelosEncolados.drop([idVuelo])
+                    self.dfVuelosEncolados["Estado"][row["idVuelo"]]=3
         return 0
 
     def escogerVuelos(self):
