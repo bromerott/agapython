@@ -13,6 +13,7 @@ class AlgoritmoCola():
         return self.dfVuelosEncolados.to_json(orient='records')
     #Listar filas cuyo estado sea =3
     def listarVuelosMuertos(self):
+        self.eliminarVuelos()
         return self.dfVuelosEncolados.loc[self.dfVuelosEncolados["Estado"]==3].to_json(orient='records')
     #Encolacion del vuelo al algoritmo
     def encolarVuelo(self,idVuelo,TiempoLlegada,NPersonas,NPrioridad):
@@ -31,9 +32,9 @@ class AlgoritmoCola():
     def eliminarVuelos(self):
         hoyMenos3Dias = datetime.datetime.now() - timedelta(days=3)
         self.dfVuelosEncolados = self.dfVuelosEncolados[self.dfVuelosEncolados["TiempoLlegada"] < hoyMenos3Dias]
-
     
     def matarVuelos(self,asignaciones,puertas):
+        self.eliminarVuelos()
         #Chequeo de vuelos que ya descargaron pasajeros y mueren para el sistema
         for asignacion in asignaciones:
             if (asignacion['idVueloAsignado']):
