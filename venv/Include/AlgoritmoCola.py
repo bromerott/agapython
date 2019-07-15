@@ -33,7 +33,7 @@ class AlgoritmoCola():
                 Flujo=0
                 for puerta in puertas:
                     if (puerta['id_puerta'] == asignacion['id_puerta']):
-                        Flujo = puerta['flujo_personas']
+                        Flujo = puerta['FlujoPersonas']
 
                 idVuelo = asignacion['idVueloAsignado']
                 #Busqueda en dfVuelosEncolados
