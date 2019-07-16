@@ -56,11 +56,6 @@ def update_Vuelos():
 def get_Vuelos():
     return jsonify({'VuelosEncolados':contAlgoritmoCola.listarVuelosEncolados()}), 201
 
-#Metodo para listar vuelos encolados al servidor (uso interno)
-@app.route('/agapython/listarVuelosMuertos', methods=['GET'])
-def matar_Vuelos():
-    return jsonify({'VuelosEncolados':contAlgoritmoCola.listarVuelosMuertos()}), 201
-
 #Metodo para asignar vuelos
 @app.route('/agapython/asignarVuelos', methods=['GET'])
 def assign_Vuelos():

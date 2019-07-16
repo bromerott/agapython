@@ -11,9 +11,6 @@ class AlgoritmoCola():
         self.dfVuelosEncolados = pd.DataFrame(columns=['idVuelo','TiempoLlegada','NPersonas','NPrioridad','Asignado','Estado'])
     def listarVuelosEncolados(self):
         return self.dfVuelosEncolados.to_json(orient='records')
-    #Listar filas cuyo estado sea =3
-    def listarVuelosMuertos(self):
-        return self.dfVuelosEncolados.loc[self.dfVuelosEncolados["Estado"]==3].to_json(orient='records')
     #Encolacion del vuelo al algoritmo
     def encolarVuelo(self,idVuelo,TiempoLlegada,NPersonas,NPrioridad):
         #Parsing de string TiempoLlegada a datetime
@@ -45,7 +42,7 @@ class AlgoritmoCola():
                 #Chequeo de muerte
                 if (datetime.datetime.now() > tiempoCalculado):
                     #Matar vuelo, desencolandolo para siempre
-                    self.dfVuelosEncolados["Estado"][row["idVuelo"]]=3
+                    self.dfVuelosEncolados = self.dfVuelosEncolados.drop([idVuelo])
         return 0
 
     def escogerVuelos(self):
