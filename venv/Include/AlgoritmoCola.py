@@ -20,10 +20,10 @@ class AlgoritmoCola():
     
     def actualizarVuelos(self):
         #Chequeo de vuelos aterrizados
-        for row in self.dfVuelosEncolados:
-            tiempoLlegada = row['TiempoLlegada'][0]
-            if (tiempoLlegada>datetime.datetime.now()):
-                self.dfVuelosEncolados["Estado"][row["idVuelo"]]=2
+        for index, row in self.dfVuelosEncolados.iterrows():
+            tiempoLlegada = row['TiempoLlegada']
+            if (tiempoLlegada<datetime.now()):
+                self.dfVuelosEncolados["Estado"][index]=2
     
     def matarVuelos(self,asignaciones,puertas):
         #Chequeo de vuelos que ya descargaron pasajeros y mueren para el sistema
@@ -63,12 +63,12 @@ class AlgoritmoCola():
 
             #dataframe ordenadito
             dfOrdenado = dfNoAsignados.sort_values(['horaLlegada', 'NPrioridad','NPersonas'], ascending=[False, False,False])
-            dfVuelosEscogidos = dfOrdenado[1:min(espacioSlack,dfOrdenado.shape[0])]
+            dfVuelosEscogidos = dfOrdenado[0:min(espacioSlack,dfOrdenado.shape[0])]
             codigosEscodigos = dfVuelosEscogidos['idVuelo']
 
             #Con los codigos de los vuelos escogidos, actualizar el atributo Asignado
             for codigo in codigosEscodigos:
-                self.dfVuelosEncolados[self.dfVuelosEncolados['idVuelo']==codigo]['Asignado'] =1
-                self.dfVuelosEncolados[self.dfVuelosEncolados['idVuelo']==codigo]['Estado'] = 1
+                self.dfVuelosEncolados.loc[self.dfVuelosEncolados['idVuelo']==codigo,['Asignado']] =1
+                self.dfVuelosEncolados.loc[self.dfVuelosEncolados['idVuelo']==codigo,['Estado']] = 1
 
         return dfVuelosEscogidos

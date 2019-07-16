@@ -41,5 +41,18 @@ class ControladorAsignaciones():
     def asignarVuelos(self,dfVuelosEscogidos):
         resultado = SimulatedAnnealing.SimulatedAnnealing(self.dfPuertas,dfVuelosEscogidos)
         #A partir del resultado del algoritmo, actualizar la estructura dict asignaciones
-        print(resultado)
+        #Resultado es un dataframe donde cada columna es un arreglo de 39 columnas con 0s y 1s
+        for index, row in dfVuelosEscogidos.iterrows():
+            #para cada fila (en orden), le corresponde la row de resultado:
+            rowResultado = resultado.iloc[index]
+            #sacar nPuerta (corresponde al unico 1 en la fila rowResultado +1 )
+            idPuerta = rowResultado[rowResultado==1].index[0] +1
+            #Ahora actualizar asignaciones
+            for asignacion in self.asignaciones:
+                if (asignacion['idPuerta'] == idPuerta):
+                    asignacion['idVueloAsignado'] = row['idVuelo']
+
+
+            print(idPuerta)
+            print(type(idPuerta))
         return resultado

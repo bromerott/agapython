@@ -12,7 +12,7 @@ def CrearModelo(Gates,Llegadas):
     #Conseguir 38 datos
     #Cargar Datos
     #Por ahora, trabajar solo con las primeras 30 llegadas
-    Llegadas_shape = Llegadas.shape[0]
+    Llegadas_shape = Llegadas.shape
     Llegadas_ordenadas = Llegadas.sort_values(['TiempoLlegada'], ascending=[True])
     #Output
     return {'Llegadas':Llegadas,'Llegadas_shape':Llegadas_shape,'Llegadas_ordenadas':Llegadas_ordenadas, 'Gates':Gates}
@@ -20,7 +20,7 @@ def CrearModelo(Gates,Llegadas):
 #Funcion crear solucion inicial
 def SolucionIni(modelo):
     J = modelo['Gates'].shape[0]
-    I = modelo['Llegadas_shape']
+    I = modelo['Llegadas_shape'][0]
     #Objetivo: Llegar a una solucion Xij que asigne el vuelo i a la puerta j
     X = DataFrame(0, index= range(I), columns = np.arange(J))
     
@@ -38,16 +38,17 @@ def calcularObjetivo(modelo,X):
     costo = 0
     for i in range(1,filas):
         for j in range(1,columnas):
-            if (X[j][i == 1]):
-                nPasajeros=modelo['Llegadas'].iloc[i]['NPersonas']
-                caudal=modelo['Gates'].iloc[j]['FlujoPersonas']
-                costo = costo + X[j][i]*nPasajeros/caudal
+            if (X[j][i] == 1):
+                nPasajeros= float( modelo['Llegadas'].iloc[i]['NPersonas'])
+                caudal= float( modelo['Gates'].iloc[j]['FlujoPersonas'])
+                costo = costo + nPasajeros/ caudal
     return costo
 
 #Funcion que toma una solucion y la cambia a un "vecino"
 def crearVecino(modelo,q):
     xx = copy.deepcopy(q['X'])
     n = len(q['X'])
+    print(n)
     i = random.sample(range(n), 2)
     i1 = i[0]
     i2 = i[1]
@@ -99,6 +100,4 @@ def SimulatedAnnealing(dfPuertas,dfLlegadas):
             T = T0*alpha
             
     #Transformar solucion['X'] (un arreglo de 0s y 1s a una lista de dicts de Asignaciones)
-    nPuertas = modelo['Llegadas_shape'][0]
-    nVuelos = modelo['Llegadas_shape'][1]
-    return ("Shape: "+nPuertas+" "+nVuelos)
+    return (mejorSolucion['X'])
