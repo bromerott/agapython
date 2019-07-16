@@ -48,13 +48,14 @@ def calcularObjetivo(modelo,X):
 def crearVecino(modelo,q):
     xx = copy.deepcopy(q['X'])
     n = len(q['X'])
-    print(n)
-    i = random.sample(range(n), 2)
-    i1 = i[0]
-    i2 = i[1]
-    var = copy.deepcopy(xx.iloc[i2].values)
-    xx.iloc[i2] = xx.iloc[i1]
-    xx.iloc[i1] = var
+    if (n>1):
+        print(n)
+        i = random.sample(range(n), 2)
+        i1 = i[0]
+        i2 = i[1]
+        var = copy.deepcopy(xx.iloc[i2].values)
+        xx.iloc[i2] = xx.iloc[i1]
+        xx.iloc[i1] = var
     return {'xx':xx}
 
 #Funcion main
