@@ -32,15 +32,18 @@ class AlgoritmoCola():
                 #Busqueda en dict puertas
                 Flujo=0
                 for puerta in puertas:
-                    if (puerta['id_puerta'] == asignacion['id_puerta']):
+                    if (puerta['idPuerta'] == asignacion['idPuerta']):
                         Flujo = puerta['FlujoPersonas']
 
                 idVuelo = asignacion['idVueloAsignado']
                 #Busqueda en dfVuelosEncolados
                 row = self.dfVuelosEncolados[self.dfVuelosEncolados['idVuelo'] == idVuelo]
-                tiempoCalculado = row['TiempoLlegada'][0]+(Flujo*row['NPersonas'][0])
+                print(type(Flujo))
+                print(row['NPersonas'])
+                print(type(row['NPersonas'].iloc[0]))
+                tiempoCalculado = row['TiempoLlegada'].iloc[0]+ timedelta(minutes=(Flujo*int(row['NPersonas'].iloc[0])))
                 #Chequeo de muerte
-                if (datetime.datetime.now() > tiempoCalculado):
+                if (datetime.now() > tiempoCalculado):
                     #Matar vuelo, desencolandolo para siempre
                     self.dfVuelosEncolados = self.dfVuelosEncolados.drop([idVuelo])
         return 0
