@@ -61,10 +61,10 @@ def get_Vuelos():
 @app.route('/agapython/asignarVuelos', methods=['GET'])
 def assign_Vuelos():
     #Matar vuelos porsiacaso
-    #contAlgoritmoCola.actualizarVuelos()
-    #codigosMuertos = contAlgoritmoCola.matarVuelos(contAsignaciones.listarAsignaciones(),contAsignaciones.listarPuertas())
+    contAlgoritmoCola.actualizarVuelos()
+    codigosMuertos = contAlgoritmoCola.matarVuelos(contAsignaciones.listarAsignaciones(),contAsignaciones.listarPuertas())
     #print(codigosMuertos)
-    #contAsignaciones.matarAsignaciones(codigosMuertos)
+    contAsignaciones.matarAsignaciones(codigosMuertos)
     dfVuelosEscogidos = contAlgoritmoCola.escogerVuelos()
     if (dfVuelosEscogidos.shape[0]):
         contAsignaciones.asignarVuelos(dfVuelosEscogidos)

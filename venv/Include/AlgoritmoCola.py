@@ -62,7 +62,8 @@ class AlgoritmoCola():
         #Objetivo: A partir del dfVuelosEncolados, escoger cuales seran asignados por el algoritmo, y cuales esperan
         dfNoAsignados = self.dfVuelosEncolados[self.dfVuelosEncolados['Asignado']==0]
         #Calcular cuanto espacio puedo asignar a nuevos vuelos (bufferSize maximo - asignados (y no droppeados))
-        espacioSlack = self.bufferSize - dfNoAsignados.shape[0]
+        nAsignados = self.dfVuelosEncolados[self.dfVuelosEncolados['Asignado']==1].shape[0]
+        espacioSlack = self.bufferSize - nAsignados
         #Orden de eleccion: Ordenar por hora de llegada, luego por NPrioridad, y luego por NPersonas
         #Vuelo que llega 11am consigue sitio antes que el vuelo que llega 12am
         #Para dos vuelos que llegan 12am, consigue sitio el de la aerolinea de mayor Prioridad
