@@ -16,6 +16,11 @@ class ControladorAsignaciones():
         #Cargar puertas desde la BD
         self.cargarPuertas()
 
+    def matarAsignaciones(self,codigosMuertos):
+        for asignacion in self.asignaciones:
+            if asignacion['idVueloAsignado'] in codigosMuertos:
+                asignacion['idVueloAsignado']=""
+
     def listarAsignaciones(self):
         return self.asignaciones
 
@@ -25,9 +30,9 @@ class ControladorAsignaciones():
     def cargarPuertas(self):
         #Cargar las puertas (nPuerta,Tipo,FlujoPersonas, Estado) desde la BD
         mydb = mysql.connector.connect(
-            host="200.16.7.178",
-            user="bromero",
-            passwd="bromero",
+            host="127.0.0.1",
+            user="root",
+            passwd="",
             port="3306",
             database="AGAPORT"
         )

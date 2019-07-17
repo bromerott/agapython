@@ -26,24 +26,37 @@ class AlgoritmoCola():
                 self.dfVuelosEncolados["Estado"][index]=2
     
     def matarVuelos(self,asignaciones,puertas):
+        print(self.dfVuelosEncolados)
+        #Vuelos a matar
+        codigosMuertos=list()
         #Chequeo de vuelos que ya descargaron pasajeros y mueren para el sistema
         for asignacion in asignaciones:
             if (asignacion['idVueloAsignado']):
+                print(asignacion['idVueloAsignado'])
                 #Busqueda en dict puertas
                 Flujo=0
                 for puerta in puertas:
                     if (puerta['idPuerta'] == asignacion['idPuerta']):
-                        Flujo = puerta['FlujoPersonas']
+                        Flujo = float(puerta['FlujoPersonas'])
 
                 idVuelo = asignacion['idVueloAsignado']
                 #Busqueda en dfVuelosEncolados
                 row = self.dfVuelosEncolados[self.dfVuelosEncolados['idVuelo'] == idVuelo]
-                tiempoCalculado = row['TiempoLlegada'].iloc[0]+ timedelta(minutes=(Flujo*int(row['NPersonas'].iloc[0])))
+                tiempoCalculado = row['TiempoLlegada'].iloc[0]+ timedelta(minutes=int(float(row['NPersonas'].iloc[0])/Flujo))
                 #Chequeo de muerte
+                print("chequeo:")
+                print("tiempoCa:")
+                print(tiempoCalculado)
+                print("Ahora:")
+                print(datetime.now())
                 if (datetime.now() > tiempoCalculado):
                     #Matar vuelo, desencolandolo para siempre
-                    self.dfVuelosEncolados = self.dfVuelosEncolados.drop([idVuelo])
-        return 0
+                    codigosMuertos.append(idVuelo)
+                    print("drop!")
+                    #sacar index de 
+                    self.dfVuelosEncolados = self.dfVuelosEncolados.drop(self.dfVuelosEncolados[self.dfVuelosEncolados['idVuelo'] == idVuelo].index)
+        #print(self.dfVuelosEncolados)
+        return codigosMuertos
 
     def escogerVuelos(self):
         #Objetivo: A partir del dfVuelosEncolados, escoger cuales seran asignados por el algoritmo, y cuales esperan

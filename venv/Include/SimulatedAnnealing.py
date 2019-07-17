@@ -48,13 +48,19 @@ def calcularObjetivo(modelo,X):
 def crearVecino(modelo,q):
     xx = copy.deepcopy(q['X'])
     n = len(q['X'])
-    if (n>1):
-        i = random.sample(range(n), 2)
-        i1 = i[0]
-        i2 = i[1]
-        var = copy.deepcopy(xx.iloc[i2].values)
-        xx.iloc[i2] = xx.iloc[i1]
-        xx.iloc[i1] = var
+    i = random.sample(range(n), 1)
+    #crear lista de Puertas
+    nPuertas = list(range(q['X'].shape[1]))
+    #eliminar de estas las que ya estan bloqueadas
+    nPuertasLibres = list()
+    for j in nPuertas:
+        if not (1 in pd.Series(q['X'][j]).tolist()):
+            nPuertasLibres.append(j)
+    #crear fila de n longitud con un 1 en una puerta en desuso al azar
+    nuevaPuerta = random.sample(nPuertasLibres,1)[0]
+    #actualizar valor en xx (poner antiguo valor en 0, nuevo en 1)
+    xx.iloc[i] = xx.iloc[i].replace(1,0)
+    xx.at[i,nuevaPuerta]=1
     return {'xx':xx}
 
 #Funcion main
