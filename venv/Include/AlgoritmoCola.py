@@ -23,7 +23,7 @@ class AlgoritmoCola():
         for index, row in self.dfVuelosEncolados.iterrows():
             tiempoLlegada = row['TiempoLlegada']
             if (tiempoLlegada<datetime.now()):
-                self.dfVuelosEncolados["Estado"].iloc[index]=2
+                self.dfVuelosEncolados["Estado"].loc[index]=2
     
     def matarVuelos(self,asignaciones,puertas):
         print(self.dfVuelosEncolados)
