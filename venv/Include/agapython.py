@@ -62,7 +62,7 @@ def get_Vuelos():
 def assign_Vuelos():
     #Matar vuelos porsiacaso
     contAlgoritmoCola.actualizarVuelos()
-    codigosMuertos = contAlgoritmoCola.matarVuelos(contAsignaciones.listarAsignaciones(),contAsignaciones.listarPuertas())
+    codigosMuertos = contAlgoritmoCola.matarVuelos(contAsignaciones.listarAsignaciones(),contAsignaciones.nPuertasHabilitadas())
     #print(codigosMuertos)
     contAsignaciones.matarAsignaciones(codigosMuertos)
     dfVuelosEscogidos = contAlgoritmoCola.escogerVuelos(contAsignaciones.listarPuertas())

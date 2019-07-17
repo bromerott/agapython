@@ -27,6 +27,9 @@ class ControladorAsignaciones():
     def listarPuertas(self):
         return self.dfPuertas.to_dict('records')
 
+    def nPuertasHabilitadas(self):
+        return self.dfPuertas[self.dfPuertas['Estado']==1].shape[0]
+
     def cargarPuertas(self):
         #Cargar las puertas (nPuerta,Tipo,FlujoPersonas, Estado) desde la BD
         mydb = mysql.connector.connect(

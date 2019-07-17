@@ -58,13 +58,13 @@ class AlgoritmoCola():
         #print(self.dfVuelosEncolados)
         return codigosMuertos
 
-    def escogerVuelos(self, puertas):
+    def escogerVuelos(self, nPuertas):
         #Objetivo: A partir del dfVuelosEncolados, escoger cuales seran asignados por el algoritmo, y cuales esperan
         dfNoAsignados = self.dfVuelosEncolados[self.dfVuelosEncolados['Asignado']==0]
         #Calcular cuanto espacio puedo asignar a nuevos vuelos (bufferSize maximo - asignados (y no droppeados))
         nAsignados = self.dfVuelosEncolados[self.dfVuelosEncolados['Asignado']==1].shape[0]
         #bufferSize = nPuertas Habilitadas
-        self.bufferSize = puertas[puertas['Estado']==1].shape[0]
+        self.bufferSize = nPuertas
         espacioSlack = self.bufferSize - nAsignados
         #Orden de eleccion: Ordenar por hora de llegada, luego por NPrioridad, y luego por NPersonas
         #Vuelo que llega 11am consigue sitio antes que el vuelo que llega 12am
