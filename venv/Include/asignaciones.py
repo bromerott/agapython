@@ -25,34 +25,49 @@ class ControladorAsignaciones():
     def cargarPuertas(self):
         #Cargar las puertas (nPuerta,Tipo,FlujoPersonas, Estado) desde la BD
         mydb = mysql.connector.connect(
-            host="200.16.7.178",
-            user="bromero",
-            passwd="bromero",
+            host="127.0.0.1",
+            user="root",
+            passwd="",
             port="3306",
             database="AGAPORT"
         )
         mydb.connect()
-        print(mydb)
         self.dfPuertas = pd.read_sql_query("SELECT id_puerta,tipo,distanciaasalida,flujo_personas,estado,borrado FROM puertas; ",mydb)
         self.dfPuertas = self.dfPuertas.rename(columns={"id_puerta":"idPuerta","flujo_personas":"FlujoPersonas","distanciaasalida":"DistanciaASalida","tipo":"Tipo","estado":"Estado"})
-        #print(self.dfPuertas)
         mydb.close()
         return 0
     def asignarVuelos(self,dfVuelosEscogidos):
-        resultado = SimulatedAnnealing.SimulatedAnnealing(self.dfPuertas,dfVuelosEscogidos)
+        #Sacar relacion codigoPuertas -> nuevo dfPuertas
+        dfPuertasDisp = self.dfPuertas[self.dfPuertas['Estado']==1]
+        #Quitar puertas asignadas
+        for asignacion in self.asignaciones:
+            if (asignacion['idVueloAsignado']):
+                index = dfPuertasDisp[ dfPuertasDisp['idPuerta'] == asignacion['idPuerta'] ].index
+                dfPuertasDisp = dfPuertasDisp.drop(index)
+        print("dfPuertasDisp")
+        print(dfPuertasDisp)
+        resultado = SimulatedAnnealing.SimulatedAnnealing(dfPuertasDisp,dfVuelosEscogidos)
+        print("Resultado de SA")
+        print(resultado)
         #A partir del resultado del algoritmo, actualizar la estructura dict asignaciones
         #Resultado es un dataframe donde cada columna es un arreglo de 39 columnas con 0s y 1s
-        for index, row in dfVuelosEscogidos.iterrows():
-            #para cada fila (en orden), le corresponde la row de resultado:
-            rowResultado = resultado.iloc[index]
-            #sacar nPuerta (corresponde al unico 1 en la fila rowResultado +1 )
-            idPuerta = rowResultado[rowResultado==1].index[0] +1
-            #Ahora actualizar asignaciones
+        for index, row in resultado.iterrows():
+            #index corresponde al i-esimo elemento de dfVuelos escogidos
+            codVueloAsignado = dfVuelosEscogidos.iloc[index]['idVuelo']
+            print("codVueloAsignado:",codVueloAsignado)
+            #Sacar ocurrencia de 1 en row
+            nPuertaAsignada=-1
+            i=0
+            for e in row:
+                if (e==1):
+                    nPuertaAsignada = i
+                i=i+1
+            print("nPuertaAsignada:",nPuertaAsignada)
+            #Relacionar ocurrencia de 1 (sistema de filas de SA) con idPuerta
+            codPuertaAsignada = dfPuertasDisp.iloc[nPuertaAsignada]['idPuerta']
+            print("codPuertaAsignada:",codPuertaAsignada)
+            #Actualizar BD interna de asignaciones
             for asignacion in self.asignaciones:
-                if (asignacion['idPuerta'] == idPuerta):
-                    asignacion['idVueloAsignado'] = row['idVuelo']
-
-
-            print(idPuerta)
-            print(type(idPuerta))
+                if (asignacion['idPuerta'] == codPuertaAsignada):
+                    asignacion['idVueloAsignado'] = codVueloAsignado
         return resultado

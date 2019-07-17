@@ -23,7 +23,6 @@ def get_Asignaciones():
 @app.route('/agapython/actualizarPuertas', methods=['GET'])
 def update_Puerta():
     try:
-        print("Actualizacion de Puertas!")
         contAsignaciones.cargarPuertas()
     except:
         return jsonify({'Error':'Error en la carga de base de datos'})

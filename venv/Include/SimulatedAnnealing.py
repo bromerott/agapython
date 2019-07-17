@@ -49,7 +49,6 @@ def crearVecino(modelo,q):
     xx = copy.deepcopy(q['X'])
     n = len(q['X'])
     if (n>1):
-        print(n)
         i = random.sample(range(n), 2)
         i1 = i[0]
         i2 = i[1]
@@ -94,7 +93,6 @@ def SimulatedAnnealing(dfPuertas,dfLlegadas):
                 rand = random.uniform(0, 1)
                 if rand <= p:
                     #Si la probabilidad se da, moverse a esa solucion
-                    #print("Salto a una peor solucion!")
                     solucion['X'] = vecino['xx']
 
             #Reducir Temperatura

@@ -38,9 +38,6 @@ class AlgoritmoCola():
                 idVuelo = asignacion['idVueloAsignado']
                 #Busqueda en dfVuelosEncolados
                 row = self.dfVuelosEncolados[self.dfVuelosEncolados['idVuelo'] == idVuelo]
-                print(type(Flujo))
-                print(row['NPersonas'])
-                print(type(row['NPersonas'].iloc[0]))
                 tiempoCalculado = row['TiempoLlegada'].iloc[0]+ timedelta(minutes=(Flujo*int(row['NPersonas'].iloc[0])))
                 #Chequeo de muerte
                 if (datetime.now() > tiempoCalculado):
@@ -61,8 +58,7 @@ class AlgoritmoCola():
         dfVuelosEscogidos = pd.DataFrame()
         if (espacioSlack>0 and dfNoAsignados.shape[0]>0):
             #Definicion de columna 'horaLlegada'
-            dateLlegada = dfNoAsignados['TiempoLlegada'][0]
-            dfNoAsignados['horaLlegada'] = dateLlegada.hour
+            dfNoAsignados['horaLlegada'] = dfNoAsignados.apply(lambda row: row.TiempoLlegada.hour,axis=1)
 
             #dataframe ordenadito
             dfOrdenado = dfNoAsignados.sort_values(['horaLlegada', 'NPrioridad','NPersonas'], ascending=[False, False,False])
