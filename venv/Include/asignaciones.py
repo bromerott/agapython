@@ -25,9 +25,9 @@ class ControladorAsignaciones():
     def cargarPuertas(self):
         #Cargar las puertas (nPuerta,Tipo,FlujoPersonas, Estado) desde la BD
         mydb = mysql.connector.connect(
-            host="127.0.0.1",
-            user="root",
-            passwd="",
+            host="200.16.7.178",
+            user="bromero",
+            passwd="bromero",
             port="3306",
             database="AGAPORT"
         )
