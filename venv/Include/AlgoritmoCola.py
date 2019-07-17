@@ -65,6 +65,8 @@ class AlgoritmoCola():
         nAsignados = self.dfVuelosEncolados[self.dfVuelosEncolados['Asignado']==1].shape[0]
         #bufferSize = nPuertas Habilitadas
         self.bufferSize = nPuertas
+        print(nPuertas)
+        print(nAsignados)
         espacioSlack = self.bufferSize - nAsignados
         #Orden de eleccion: Ordenar por hora de llegada, luego por NPrioridad, y luego por NPersonas
         #Vuelo que llega 11am consigue sitio antes que el vuelo que llega 12am

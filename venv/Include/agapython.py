@@ -65,7 +65,7 @@ def assign_Vuelos():
     codigosMuertos = contAlgoritmoCola.matarVuelos(contAsignaciones.listarAsignaciones(),contAsignaciones.nPuertasHabilitadas())
     #print(codigosMuertos)
     contAsignaciones.matarAsignaciones(codigosMuertos)
-    dfVuelosEscogidos = contAlgoritmoCola.escogerVuelos(contAsignaciones.listarPuertas())
+    dfVuelosEscogidos = contAlgoritmoCola.escogerVuelos(contAsignaciones.nPuertasHabilitadas())
     if (dfVuelosEscogidos.shape[0]):
         contAsignaciones.asignarVuelos(dfVuelosEscogidos)
         return jsonify({'Vuelos': 'Asignados (consulte ahora servicio listarAsignaciones)'}), 201
