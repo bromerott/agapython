@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 class AlgoritmoCola():
     #Tamaño maximo de input al algoritmo
-    bufferSize = 38
+    bufferSize = 34
     #Vuelos en cola almacenados en un Dataframe
     dfVuelosEncolados = pd.DataFrame()
     #Definicion de columnas del dataframe
